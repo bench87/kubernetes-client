@@ -59,6 +59,14 @@ class KubernetesClient[F[_]: Async: Logger](
     new PersistentVolumeClaimsApi(httpClient, config, authorization)
   lazy val raw: RawApi[F] = new RawApi[F](httpClient, wsClient, config, authorization)
 
+  // Istio APIs
+  lazy val authorizationPolicies: AuthorizationPoliciesApi[F] =
+    new AuthorizationPoliciesApi(httpClient, config, authorization)
+  lazy val sidecars: SidecarsApi[F] =
+    new SidecarsApi(httpClient, config, authorization)
+  lazy val virtualServices: VirtualServicesApi[F] =
+    new VirtualServicesApi(httpClient, config, authorization)
+
   def customResources[A, B](context: CrdContext)(implicit
       listDecoder: Decoder[CustomResourceList[A, B]],
       encoder: Encoder[CustomResource[A, B]],
